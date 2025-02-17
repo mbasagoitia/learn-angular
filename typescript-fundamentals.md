@@ -72,14 +72,88 @@ Sometimes we may need to pass an object to a function that is expecting certain 
 Groups variables (properties) and functions (methods) that are highly related. Helps with cohesion principle. We can include the implementation of methods in the class, whereas we only include the function signature/description in interfaces.
 
 class Point {
-    x: number;
-    y: number;
+    private _x: number;
+    private _y: number;
+
+    constructor(x?: number, y?: number) { <- you can add the question mark to indicate that parameters are optional
+        this._x = x;
+        this._y = y;
+    }
 
     draw() {
-        // ...
+        // console.log(this.x + ", " + this.y) <- remember to use the this keyword when referring to properties on the object
     }
 
     getDistance(another: Point) {
         // ...
     }
 }
+
+When defining an object of a custom type, we need to explicitly allocate memory to it. We do this by initializing the object with the new Class() method.
+
+### Creating objects and calling methods
+
+let point: Point = new Point(); <- TS can infer this is a point object, so this can be written as let point = new Point();
+
+let point = new Point(1, 2) <- x and y are assigned from constructor
+point.draw()
+point.getDistance()
+
+### Constructor Method
+
+Method that (usually) has parameters and is called at initialization. You can only have one constructor in TS.
+
+To prevent fields and methods from being changed after initialization (such as point.x = 4), we can use **access modifiers,** which can be applied to members of a class to control its access from the outside.
+
+Access modifiers include:
+
+- private
+- public
+- protected
+
+By default, all members are public. You will not be able to access or modify private members from outside the class.
+
+A simpler way to define and assign the constructor is to include access modifiers in the declaration and omit the assignment of this.member:
+
+constructor(private _x?: number, public _y?: number) {
+
+}
+
+Note that you need to include the public keyword if you define the constructor this way.
+
+### Setters and Getters
+
+If you need to be able to see the private members of a class (but not modify them), it is best to define a method in the class (which has access to private members) such as:
+
+getX() {
+    return this._x;
+}
+
+If we want users to be able to change the value of private members of a class, we should define a setter method that can be called instead of directly modifying the member directly:
+
+setX(value) {
+    this._x = value;
+}
+
+Setter methods are useful because it also allows us to have validation and checks before changing the value.
+
+A cleaner syntax to use getter and setter methods is to use the "get" and "set" keywords, such as:
+
+get x() {
+    //...
+}
+
+set x(value) {
+    //...
+}
+
+and now we can access these getter and setter methods with point.x and point.x = 10. This calls the getter and setter methods under the hood with a cleaner syntax.
+
+Note: we prefix the existing field with an underscore so it doesn't clash with the naming of the getters and setters: _x and _y
+
+### Property vs Field
+
+A property looks like a field from the outside, but internally it is a method in the class; usually a getter and/or setter.
+
+# Modules
+
