@@ -157,3 +157,16 @@ A property looks like a field from the outside, but internally it is a method in
 
 # Modules
 
+It is highly likely that in real programs, we will not write all of the code in one file, like main.ts. We want to modularize our code by separating it into different modules/files.
+
+## Exporting and Importing Modules
+
+To make a module accessible in other files, add the export keyword before the name of the class:
+
+export class Point {
+    // class definition...
+}
+
+To import a module for use in another file, add a line at the top of the file:
+
+import { Point } from './module-name' <- relative path to module
